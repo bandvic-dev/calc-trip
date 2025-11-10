@@ -7,18 +7,36 @@
                     :items="['По пройденному растоянию', 'По литрам топлива', 'Потраченная сумма']" />
             </v-col>
             <v-col cols="12" sm="6" v-if="form.method === 'По пройденному растоянию'">
-                <v-text-field v-model="form.fuel_distance" hide-details="auto" label="Пройденное расстояние"
-                    suffix="км" />
+                <v-text-field 
+                    v-model="form.fuel_distance" 
+                    hide-details="auto" 
+                    label="Пройденное расстояние"
+                    suffix="км" 
+                    v-input-mask="mask" />
             </v-col>
             <v-col cols="12" sm="6" v-if="form.method !== 'По пройденному растоянию'">
-                <v-text-field v-model="form.input" hide-details="auto" :label="inputLabel" :suffix="inputSuffix" />
+                <v-text-field 
+                    v-model="form.input" 
+                    hide-details="auto" 
+                    :label="inputLabel" 
+                    :suffix="inputSuffix"
+                    v-input-mask="mask" />
             </v-col>
             <v-col cols="12" sm="6">
-                <v-text-field v-model="form.fuel_price" hide-details="auto" label="Стоимость топлива" suffix="лей/литр" />
+                <v-text-field 
+                    v-model="form.fuel_price" 
+                    hide-details="auto" 
+                    label="Стоимость топлива" 
+                    suffix="лей/литр"
+                    v-input-mask="mask" />
             </v-col>
             <v-col cols="12" sm="6">
-                <v-text-field v-model="form.fuel_consumption" hide-details="auto" label="Средний расход топлива"
-                    suffix="л/100км" />
+                <v-text-field 
+                    v-model="form.fuel_consumption" 
+                    hide-details="auto" 
+                    label="Средний расход топлива"
+                    suffix="л/100км" 
+                    v-input-mask="mask" />
             </v-col>
             <v-col cols="12">
                 <v-card class="result-card pa-3" color="#1E1E1E">
@@ -38,6 +56,8 @@
 
 <script setup>
 import { reactive, computed, watch } from 'vue';
+import Inputmask from 'inputmask';
+import { aliases } from 'vuetify/iconsets/fa-svg';
 
 const STORAGE_KEY = 'calc-trip-form';
 
@@ -64,8 +84,20 @@ watch(
     { deep: true }
 );
 
-// helper to parse numbers
-const toNum = v => Number(v) || 0;
+// Конфигурация маски
+const mask = {
+    alias: 'numeric',
+    rightAlign: false,
+    groupSeparator: '',
+    autoGroup: true,
+    radixPoint: '.',
+    digits: 2,
+    allowMinus: false,
+    placeholder: '0',
+};
+
+// Обновляем helper для парсинга чисел
+const toNum = v => Number(String(v).replace(/\s/g, '')) || 0;
 
 // dynamic label/suffix for the universal input
 const inputLabel = computed(() => {
@@ -106,6 +138,28 @@ const result = computed(() => {
 const resultLines = computed(() => {
     return result.value.split('\n').map(line => line.trim());
 });
+</script>
+
+<script>
+export default {
+    directives: {
+        inputMask: {
+            mounted(el, binding) {
+                const input = el.querySelector('input');
+                if (input) {
+                    const im = new Inputmask(binding.value);
+                    im.mask(input);
+                }
+            },
+            updated(el, binding) {
+                const input = el.querySelector('input');
+                if (input) {
+                    input.value = el.querySelector('input').value;
+                }
+            }
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>
