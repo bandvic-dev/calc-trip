@@ -1,5 +1,6 @@
 {
-  "name": "Расход топлива",
+  "name": "Калькулятор расхода топлива",
+  "short_name": "Calc Trip",
   "description": "Калькулятор для расчета расхода топлива",
   "start_url": "/",
   "display": "standalone",
