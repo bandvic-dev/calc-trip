@@ -2,12 +2,60 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuel Calculator</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/icons/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Калькулятор расхода топлива</title>
+    
+    <!-- iOS meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Расход топлива">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="manifest" href="/manifest.json">
+    <style>
+      .app-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #2e3034;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 1s ease;
+        z-index: 9999;
+        opacity: 1;
+      }
+      .app-loader__spinner {
+        background: url('/icons/icon-192x192.png') no-repeat center/contain;
+        width: 150px;
+        height: 150px;
+        display: block;
+      }
+      .app-loader.hidden {
+        opacity: 0;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
+    <div class="app-loader" id="loader">
+      <div class="app-loader__spinner"></div>
+    </div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      window.addEventListener('load', function() {
+        const app = document.getElementById('app');
+        const loader = document.getElementById('loader');
+        setTimeout(() => loader.classList.add('hidden'), 900);
+        setTimeout(() => loader.remove(), 1100);
+      });
+    </script>
   </body>
 </html>
