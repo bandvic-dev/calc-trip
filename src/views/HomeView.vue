@@ -37,15 +37,32 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
+import { reactive, computed, watch } from 'vue';
 
-const form = reactive({
-    fuel_price: 23.05,
-    input: 10,
-    fuel_consumption: 5.7,
-    fuel_distance: 150,
-    method: 'По пройденному растоянию'
-});
+const STORAGE_KEY = 'calc-trip-form';
+
+// Восстановление данных из localStorage
+const saved = localStorage.getItem(STORAGE_KEY);
+const form = reactive(
+    saved
+        ? JSON.parse(saved)
+        : {
+            fuel_price: 23.05,
+            input: 10,
+            fuel_consumption: 5.7,
+            fuel_distance: 150,
+            method: 'По пройденному растоянию'
+        }
+);
+
+// Сохраняем данные при любом изменении
+watch(
+    form,
+    (val) => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(val));
+    },
+    { deep: true }
+);
 
 // helper to parse numbers
 const toNum = v => Number(v) || 0;
