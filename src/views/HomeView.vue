@@ -11,8 +11,10 @@
                     v-model="form.fuel_distance" 
                     hide-details="auto" 
                     label="Пройденное расстояние"
+                    prepend-inner-icon="mdi-map-marker"
                     suffix="км" 
-                    v-input-mask="mask" />
+                    v-input-mask="mask" 
+                    @click:prepend-inner="goToMap" />
             </v-col>
             <v-col cols="12" sm="6" v-if="form.method !== 'По пройденному растоянию'">
                 <v-text-field 
@@ -57,9 +59,15 @@
 <script setup>
 import { reactive, computed, watch } from 'vue';
 import Inputmask from 'inputmask';
-import { aliases } from 'vuetify/iconsets/fa-svg';
+import { useRouter } from 'vue-router';
 
 const STORAGE_KEY = 'calc-trip-form';
+
+const router = useRouter();
+
+const goToMap = () => {
+  router.push('/map');
+}
 
 // Восстановление данных из localStorage
 const saved = localStorage.getItem(STORAGE_KEY);
