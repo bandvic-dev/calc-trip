@@ -1,52 +1,34 @@
 <template>
     <v-container>
-        <h1 class="mb-5 text-center">Расчитать расход топлива</h1>
         <v-row>
             <v-col cols="12" sm="6">
                 <v-select v-model="form.method" hide-details="auto" label="Выбрать метод расчета"
                     :items="['По пройденному растоянию', 'По литрам топлива', 'Потраченная сумма']" />
             </v-col>
             <v-col cols="12" sm="6" v-if="form.method === 'По пройденному растоянию'">
-                <v-text-field 
-                    v-model="form.fuel_distance" 
-                    hide-details="auto" 
-                    label="Пройденное расстояние"
-                    prepend-inner-icon="mdi-map-marker"
-                    suffix="км" 
-                    v-input-mask="mask" 
+                <v-text-field v-model="form.fuel_distance" hide-details="auto" label="Пройденное расстояние"
+                    prepend-inner-icon="mdi-map-marker" suffix="км" v-input-mask="mask"
                     @click:prepend-inner="goToMap" />
             </v-col>
             <v-col cols="12" sm="6" v-if="form.method !== 'По пройденному растоянию'">
-                <v-text-field 
-                    v-model="form.input" 
-                    hide-details="auto" 
-                    :label="inputLabel" 
-                    :suffix="inputSuffix"
+                <v-text-field v-model="form.input" hide-details="auto" :label="inputLabel" :suffix="inputSuffix"
                     v-input-mask="mask" />
             </v-col>
             <v-col cols="12" sm="6">
-                <v-text-field 
-                    v-model="form.fuel_price" 
-                    hide-details="auto" 
-                    label="Стоимость топлива" 
-                    suffix="лей/литр"
+                <v-text-field v-model="form.fuel_price" hide-details="auto" label="Стоимость топлива" suffix="лей/литр"
                     v-input-mask="mask" />
             </v-col>
             <v-col cols="12" sm="6">
-                <v-text-field 
-                    v-model="form.fuel_consumption" 
-                    hide-details="auto" 
-                    label="Средний расход топлива"
-                    suffix="л/100км" 
-                    v-input-mask="mask" />
+                <v-text-field v-model="form.fuel_consumption" hide-details="auto" label="Средний расход топлива"
+                    suffix="л/100км" v-input-mask="mask" />
             </v-col>
             <v-col cols="12">
                 <v-card class="result-card pa-3" color="#1E1E1E">
                     <v-card-text class="text-center py-2">
-                        <div v-for="(line, index) in resultLines" :key="index" 
-                             class="result-line d-flex align-center justify-center">
-                            <v-icon :icon="index === 0 ? 'mdi-gas-station' : 'mdi-currency-usd'" 
-                                   class="mr-2" color="#4CAF50" />
+                        <div v-for="(line, index) in resultLines" :key="index"
+                            class="result-line d-flex align-center justify-center">
+                            <v-icon :icon="index === 0 ? 'mdi-gas-station' : 'mdi-currency-usd'" class="mr-2"
+                                color="#4CAF50" />
                             {{ line }}
                         </div>
                     </v-card-text>
@@ -66,7 +48,7 @@ const STORAGE_KEY = 'calc-trip-form';
 const router = useRouter();
 
 const goToMap = () => {
-  router.push('/map');
+    router.push('/map');
 }
 
 // Восстановление данных из localStorage
@@ -172,6 +154,7 @@ export default {
 
 <style lang="scss" scoped>
 // Component styles go here
+
 .result-card {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -182,7 +165,7 @@ export default {
     padding: 4px 0;
     color: #ffffff;
     letter-spacing: 0.5px;
-    
+
     &:not(:last-child) {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
