@@ -1,6 +1,9 @@
 <template>
     <div class="map-wrapper">
         <div id="map"></div>
+        <div v-if="isLoading" class="loader-overlay">
+            <v-progress-circular indeterminate size="64" color="primary"></v-progress-circular>
+        </div>
 
         <div class="info-panel">
             <div v-if="pointA || pointB">
@@ -46,6 +49,7 @@ const addressA = ref('');
 const addressB = ref('');
 const distance = ref(null);
 const { t } = useI18n();
+const isLoading = ref(true);
 
 // SVG иконки вместо стандартных PNG (исправляет смещение)
 const iconA = L.divIcon({
@@ -252,6 +256,7 @@ onMounted(async () => {
             return;
         }
     });
+    isLoading.value = false;
 });
 </script>
 
@@ -264,6 +269,19 @@ onMounted(async () => {
 #map {
     width: 100%;
     height: calc(100vh - 48px - 38px);
+}
+
+.loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
 .info-panel {
