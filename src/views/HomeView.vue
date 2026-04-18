@@ -7,7 +7,7 @@
             </v-col>
             <v-col cols="12" sm="6" v-if="form.method === 'route'">
                 <v-text-field v-model="form.fuel_distance" hide-details="auto" :label="$t('content.text.distance.label')"
-                    prepend-inner-icon="mdi-map-marker" :suffix="t('content.units.km')" v-input-mask="mask"
+                    prepend-inner-icon="mdi-map-marker" :suffix="distanceSuffix" v-input-mask="mask"
                     @click:prepend-inner="goToMap" />
             </v-col>
             <v-col cols="12" sm="6" v-if="form.method !== 'route'">
@@ -20,7 +20,7 @@
             </v-col>
             <v-col cols="12" sm="6">
                 <v-text-field v-model="form.fuel_consumption" hide-details="auto" :label="t('content.input.consumption.label')"
-                    :suffix="t('content.input.consumption.suffix')" v-input-mask="mask" />
+                    :suffix="consumptionSuffix" v-input-mask="mask" />
             </v-col>
             <v-col cols="12">
                 <v-card class="result-card pa-3" color="#1E1E1E">
@@ -47,11 +47,17 @@ import Inputmask from 'inputmask';
 const { t } = useI18n();
 const STORAGE_KEY = 'calc-trip-form';
 const STORAGE_KEY_CURRENCY = 'app-currency';
+const STORAGE_KEY_UNITS = 'app-units';
 
-const currentCurrency = ref(localStorage.getItem(STORAGE_KEY_CURRENCY) || 'lei')
+const currentCurrency = ref(localStorage.getItem(STORAGE_KEY_CURRENCY) || 'L')
+const currentUnits = ref(localStorage.getItem(STORAGE_KEY_UNITS) || 'metric')
 
 watch(currentCurrency, (newValue) => {
     localStorage.setItem(STORAGE_KEY_CURRENCY, newValue)
+})
+
+watch(currentUnits, (newValue) => {
+    localStorage.setItem(STORAGE_KEY_UNITS, newValue)
 })
 
 const methodOptions = computed(() => [
@@ -132,17 +138,17 @@ const mask = {
 // Обновляем helper для парсинга чисел
 const toNum = v => Number(String(v).replace(/\s/g, '')) || 0;
 
-// dynamic label/suffix for the universal input
-const inputLabel = computed(() => {
-    if (form.method === 'amount') return t('content.input.amount.label');
-    if (form.method === 'route') return t('content.text.distance.label');
-    return t('content.input.fuel.label');
-});
 const inputSuffix = computed(() => {
-    return form.method === 'amount' ? currentCurrency.value : t('content.units.liters');
+    return form.method === 'amount' ? currentCurrency.value : (currentUnits.value === 'metric' ? t('content.units.liters') : t('content.units.gallons'));
 });
 const priceSuffix = computed(() => {
-    return `${currentCurrency.value}/liter`;
+    return `${currentCurrency.value}/${currentUnits.value === 'metric' ? 'liter' : 'gallon'}`;
+});
+const consumptionSuffix = computed(() => {
+    return currentUnits.value === 'metric' ? 'L/100km' : 'mpg';
+});
+const distanceSuffix = computed(() => {
+    return currentUnits.value === 'metric' ? t('content.units.km') : 'miles';
 });
 
 const result = computed(() => {
@@ -151,34 +157,78 @@ const result = computed(() => {
     const consumption = toNum(form.fuel_consumption);
     const distance = toNum(form.fuel_distance);
 
-    switch (form.method) {
-        case 'route':
-            const litersUsed = (consumption / 100) * distance;
-            const cost = litersUsed * price;
-            return t('content.result.route', { liters: litersUsed.toFixed(2), cost: cost.toFixed(2), currency: currentCurrency.value });
+    const fuelUnit = currentUnits.value === 'metric' ? t('content.units.liters') : t('content.units.gallons');
+    const distanceUnit = currentUnits.value === 'metric' ? t('content.units.km') : t('content.units.miles');
 
-        case 'fuel':
-            const possibleDistance = consumption > 0 ? (value / consumption) * 100 : 0;
-            const costFromLiters = value * price;
-            return t('content.result.fuel', {
-                value: value.toFixed(2),
-                distance: possibleDistance.toFixed(2),
-                cost: costFromLiters.toFixed(2),
-                currency: currentCurrency.value
-            });
+    if (currentUnits.value === 'metric') {
+        switch (form.method) {
+            case 'route':
+                const litersUsed = (consumption / 100) * distance;
+                const cost = litersUsed * price;
+                return t('content.result.route', { fuel: litersUsed.toFixed(2), fuelUnit, cost: cost.toFixed(2), currency: currentCurrency.value });
 
-        case 'amount':
-            const litersFromMoney = price > 0 ? (value / price) : 0;
-            const distanceFromMoney = consumption > 0 ? (litersFromMoney / consumption) * 100 : 0;
-            return t('content.result.amount', {
-                value: value.toFixed(2),
-                liters: litersFromMoney.toFixed(2),
-                distance: distanceFromMoney.toFixed(2),
-                currency: currentCurrency.value
-            });
+            case 'fuel':
+                const possibleDistance = consumption > 0 ? (value / consumption) * 100 : 0;
+                const costFromLiters = value * price;
+                return t('content.result.fuel', {
+                    value: value.toFixed(2),
+                    distance: possibleDistance.toFixed(2),
+                    distanceUnit,
+                    cost: costFromLiters.toFixed(2),
+                    currency: currentCurrency.value,
+                    fuelUnit
+                });
 
-        default:
-            return t('content.result.default');
+            case 'amount':
+                const litersFromMoney = price > 0 ? (value / price) : 0;
+                const distanceFromMoney = consumption > 0 ? (litersFromMoney / consumption) * 100 : 0;
+                return t('content.result.amount', {
+                    value: value.toFixed(2),
+                    fuel: litersFromMoney.toFixed(2),
+                    fuelUnit,
+                    distance: distanceFromMoney.toFixed(2),
+                    distanceUnit,
+                    currency: currentCurrency.value
+                });
+
+            default:
+                return t('content.result.default');
+        }
+    } else {
+        // imperial
+        switch (form.method) {
+            case 'route':
+                const gallonsUsed = distance / consumption; // miles / mpg
+                const costImp = gallonsUsed * price;
+                return t('content.result.route', { fuel: gallonsUsed.toFixed(2), fuelUnit, cost: costImp.toFixed(2), currency: currentCurrency.value });
+
+            case 'fuel':
+                const possibleDistanceImp = value * consumption; // gallons * mpg
+                const costFromGallons = value * price;
+                return t('content.result.fuel', {
+                    value: value.toFixed(2),
+                    distance: possibleDistanceImp.toFixed(2),
+                    distanceUnit,
+                    cost: costFromGallons.toFixed(2),
+                    currency: currentCurrency.value,
+                    fuelUnit
+                });
+
+            case 'amount':
+                const gallonsFromMoney = price > 0 ? (value / price) : 0;
+                const distanceFromMoneyImp = gallonsFromMoney * consumption; // gallons * mpg
+                return t('content.result.amount', {
+                    value: value.toFixed(2),
+                    fuel: gallonsFromMoney.toFixed(2),
+                    fuelUnit,
+                    distance: distanceFromMoneyImp.toFixed(2),
+                    distanceUnit,
+                    currency: currentCurrency.value
+                });
+
+            default:
+                return t('content.result.default');
+        }
     }
 });
 

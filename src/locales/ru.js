@@ -9,7 +9,8 @@ export default {
     clearData: 'Очистить данные'
   },
   footer: {
-    copyright: '© {year} Andrei Balanco'
+    copyright: '© {year} Copyright',
+    telegram: 'Telegram'
   },
   common: {
     language: 'Язык',
@@ -49,9 +50,9 @@ export default {
         }
     },
     result: {
-        route: 'Расход: {liters} литров. Стоимость: {cost} {currency}.',
-        fuel: 'На {value} литров можно проехать: {distance} км. Стоимость: {cost} {currency}.',
-        amount: 'За {value} {currency} вы получите: {liters} литров. Можно проехать: {distance} км.',
+        route: 'Расход: {fuel} {fuelUnit}. Стоимость: {cost} {currency}.',
+        fuel: 'На {value} {fuelUnit} можно проехать: {distance} {distanceUnit}. Стоимость: {cost} {currency}.',
+        amount: 'За {value} {currency} вы получите: {fuel} {fuelUnit}. Можно проехать: {distance} {distanceUnit}.',
         default: 'Выберите метод расчета'
     },
     map: {
@@ -65,12 +66,19 @@ export default {
         settings: 'Настройки'
     },
     settings: {
-        currency: 'Валюта'
+        currency: 'Валюта',
+        units: 'Единицы измерения',
+        unitOptions: {
+            metric: 'Метрическая (км, литры)',
+            imperial: 'Имперская (мили, галлоны)'
+        }
     },
     units: {
         km: 'км',
         liters: 'литров',
-        lei: 'лей'
+        lei: 'лей',
+        gallons: 'галлонов',
+        miles: 'миль'
     }
   }
 }

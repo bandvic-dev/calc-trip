@@ -9,7 +9,8 @@ export default {
         clearData: 'Clear Data'
     },
     footer: {
-        copyright: '© {year} Andrei Balanco'
+        copyright: '© {year} Copyright',
+        telegram: 'Telegram'
     },
     common: {
         language: 'Language',
@@ -49,9 +50,9 @@ export default {
             }
         },
         result: {
-            route: 'Consumption: {liters} liters. Cost: {cost} {currency}.',
-            fuel: 'For {value} liters you can drive {distance} km. Cost: {cost} {currency}.',
-            amount: 'For {value} {currency} you get {liters} liters. You can drive {distance} km.',
+            route: 'Consumption: {fuel} {fuelUnit}. Cost: {cost} {currency}.',
+            fuel: 'For {value} {fuelUnit} you can drive {distance} {distanceUnit}. Cost: {cost} {currency}.',
+            amount: 'For {value} {currency} you get {fuel} {fuelUnit}. You can drive {distance} {distanceUnit}.',
             default: 'Select calculation method'
         },
         map: {
@@ -65,12 +66,19 @@ export default {
             settings: 'Settings'
         },
         settings: {
-            currency: 'Currency'
+            currency: 'Currency',
+            units: 'Units',
+            unitOptions: {
+                metric: 'Metric (km, liters)',
+                imperial: 'Imperial (miles, gallons)'
+            }
         },
         units: {
             km: 'km',
             liters: 'liters',
-            lei: 'lei'
+            lei: 'lei',
+            gallons: 'gallons',
+            miles: 'miles'
         }
     }
 }

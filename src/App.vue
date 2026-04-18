@@ -9,26 +9,13 @@
                             <span>Calc Trip</span>
                         </router-link>
                     </v-col>
-                    <v-col cols="7" class="d-flex align-center justify-center">
+                    <v-col cols="8" class="d-flex align-center justify-center">
                         <nav class="navigation">
                             <router-link to="/" class="nav-link">{{ $t('nav.home') }}</router-link>
                             <router-link to="/map" class="nav-link">{{ $t('nav.map') }}</router-link>
                         </nav>
                     </v-col>
                     <v-col cols="2" class="d-flex align-center justify-end">
-                        <v-select v-model="currentLanguage" :items="languages" item-title="name" item-value="code"
-                            density="compact" variant="outlined" hide-details class="language-selector">
-                            <template #item="{ item, props }">
-                                <v-list-item v-bind="props" title="">
-                                    <span :class="item.raw.flagClass"></span> {{ item.raw.name }}
-                                </v-list-item>
-                            </template>
-                            <template #selection="{ item }">
-                                <span :class="item.raw.flagClass"></span> {{ item.raw.name }}
-                            </template>
-                        </v-select>
-                    </v-col>
-                    <v-col cols="1" class="d-flex align-center">
                         <v-menu>
                             <template v-slot:activator="{ props }">
                                 <v-btn class="toolbar-button" v-bind="props" icon="mdi-dots-vertical" />
@@ -50,6 +37,11 @@
             <span class="copyright">
                 {{ $t('footer.copyright', { year: new Date().getFullYear() }) }}
                 <a href="https://bandvic.vercel.app/" target="_blank" class="copyright-link">Andrei Balanco</a>
+                |
+                <a href="https://t.me/calc_trip" target="_blank" class="copyright-link">
+                    <v-icon icon="mdi-chat-outline" size="small"></v-icon>
+                    {{ $t('footer.telegram') }}
+                </a>
             </span>
         </v-footer>
     </v-app>
@@ -69,28 +61,6 @@ watch(locale, () => {
 onMounted(() => {
     document.title = t('common.title')
 })
-
-const languages = ref([
-    { code: 'ru', name: 'РУ', flagClass: 'fi fi-ru' },
-    { code: 'en', name: 'EN', flagClass: 'fi fi-us' },
-    { code: 'ro', name: 'RO', flagClass: 'fi fi-ro' },
-    { code: 'uk', name: 'УК', flagClass: 'fi fi-ua' },
-])
-
-const STORAGE_KEY = 'app-language'
-
-const currentLanguage = computed({
-    get: () => locale.value,
-    set: (value) => {
-        locale.value = value
-        localStorage.setItem(STORAGE_KEY, value)
-    }
-})
-
-const changeLanguage = (newLang) => {
-    locale.value = newLang
-    localStorage.setItem(STORAGE_KEY, newLang)
-}
 
 const toolbarMenu = ref([
     { key: 'settings', translationKey: 'menu.settings', link: '/settings' },
@@ -148,45 +118,18 @@ body {
     font-weight: 600;
     font-size: 1.1rem;
     cursor: pointer;
+
+    span {
+        @media (max-width: 960px) {
+            display: none;
+        }
+    }
 }
 
 .toolbar-logo {
     width: 28px;
     height: 28px;
     margin-right: 10px;
-}
-
-.language-selector {
-    max-width: 100px;
-    margin-right: 10px;
-}
-
-.language-selector span {
-    margin-right: 5px;
-    display: inline-block;
-}
-
-.fi {
-    width: 20px;
-    height: 15px;
-    margin-right: 5px;
-}
-
-.language-selector .v-field {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.language-selector .v-field:hover {
-    border-color: #4caf50;
-}
-
-.language-selector .v-field__input {
-    color: rgba(255, 255, 255, 0.87);
-}
-
-.language-selector .v-list-item {
-    white-space: nowrap;
 }
 
 .copyright {

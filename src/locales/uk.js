@@ -9,7 +9,8 @@ export default {
         clearData: 'Очистити дані'
     },
     footer: {
-        copyright: '© {year} Andrei Balanco'
+        copyright: '© {year} Copyright',
+        telegram: 'Telegram'
     },
     common: {
         language: 'Мова',
@@ -49,9 +50,9 @@ export default {
             }
         },
         result: {
-            route: 'Витрата: {liters} літрів. Вартість: {cost} {currency}.',
-            fuel: 'За {value} літрів можна проїхати {distance} км. Вартість: {cost} {currency}.',
-            amount: 'За {value} {currency} ви отримаєте {liters} літрів. Можна проїхати {distance} км.',
+            route: 'Витрата: {fuel} {fuelUnit}. Вартість: {cost} {currency}.',
+            fuel: 'За {value} {fuelUnit} можна проїхати {distance} {distanceUnit}. Вартість: {cost} {currency}.',
+            amount: 'За {value} {currency} ви отримаєте {fuel} {fuelUnit}. Можна проїхати {distance} {distanceUnit}.',
             default: 'Оберіть метод розрахунку'
         },
         map: {
@@ -65,12 +66,19 @@ export default {
             settings: 'Налаштування'
         },
         settings: {
-            currency: 'Валюта'
+            currency: 'Валюта',
+            units: 'Одиниці вимірювання',
+            unitOptions: {
+                metric: 'Метрична (км, літри)',
+                imperial: 'Імперська (милі, галони)'
+            }
         },
         units: {
             km: 'км',
             liters: 'літрів',
-            lei: 'лей'
+            lei: 'лей',
+            gallons: 'галонів',
+            miles: 'миль'
         }
     }
 }

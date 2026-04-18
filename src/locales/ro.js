@@ -9,7 +9,8 @@ export default {
         clearData: 'Șterge datele'
     },
     footer: {
-        copyright: '© {year} Andrei Balanco'
+        copyright: '© {year} Copyright',
+        telegram: 'Telegram'
     },
     common: {
         language: 'Limbă',
@@ -49,9 +50,9 @@ export default {
             }
         },
         result: {
-            route: 'Consum: {liters} litri. Cost: {cost} {currency}.',
-            fuel: 'Pentru {value} litri poți parcurge {distance} km. Cost: {cost} {currency}.',
-            amount: 'Pentru {value} {currency} primești {liters} litri. Poți parcurge {distance} km.',
+            route: 'Consum: {fuel} {fuelUnit}. Cost: {cost} {currency}.',
+            fuel: 'Pentru {value} {fuelUnit} poți parcurge {distance} {distanceUnit}. Cost: {cost} {currency}.',
+            amount: 'Pentru {value} {currency} primești {fuel} {fuelUnit}. Poți parcurge {distance} {distanceUnit}.',
             default: 'Selectați metoda de calcul'
         },
         map: {
@@ -65,12 +66,19 @@ export default {
             settings: 'Setări'
         },
         settings: {
-            currency: 'Monedă'
+            currency: 'Monedă',
+            units: 'Unități',
+            unitOptions: {
+                metric: 'Metric (km, litri)',
+                imperial: 'Imperial (mile, galoane)'
+            }
         },
         units: {
             km: 'km',
             liters: 'litri',
-            lei: 'lei'
+            lei: 'lei',
+            gallons: 'galoane',
+            miles: 'mile'
         }
     }
 }
