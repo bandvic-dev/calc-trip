@@ -15,7 +15,7 @@
                     v-input-mask="mask" />
             </v-col>
             <v-col cols="12" sm="6">
-                <v-text-field v-model="form.fuel_price" hide-details="auto" :label="t('content.input.price.label')" :suffix="t('content.input.price.suffix')"
+                <v-text-field v-model="form.fuel_price" hide-details="auto" :label="t('content.input.price.label')" :suffix="priceSuffix"
                     v-input-mask="mask" />
             </v-col>
             <v-col cols="12" sm="6">
@@ -39,13 +39,20 @@
 </template>
 
 <script setup>
-import { reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import Inputmask from 'inputmask';
 
 const { t } = useI18n();
 const STORAGE_KEY = 'calc-trip-form';
+const STORAGE_KEY_CURRENCY = 'app-currency';
+
+const currentCurrency = ref(localStorage.getItem(STORAGE_KEY_CURRENCY) || 'lei')
+
+watch(currentCurrency, (newValue) => {
+    localStorage.setItem(STORAGE_KEY_CURRENCY, newValue)
+})
 
 const methodOptions = computed(() => [
     { value: 'route', label: t('content.select.method.options.route') },
@@ -132,7 +139,10 @@ const inputLabel = computed(() => {
     return t('content.input.fuel.label');
 });
 const inputSuffix = computed(() => {
-    return form.method === 'amount' ? t('content.units.lei') : t('content.units.liters');
+    return form.method === 'amount' ? currentCurrency.value : t('content.units.liters');
+});
+const priceSuffix = computed(() => {
+    return `${currentCurrency.value}/liter`;
 });
 
 const result = computed(() => {
@@ -145,7 +155,7 @@ const result = computed(() => {
         case 'route':
             const litersUsed = (consumption / 100) * distance;
             const cost = litersUsed * price;
-            return t('content.result.route', { liters: litersUsed.toFixed(2), cost: cost.toFixed(2) });
+            return t('content.result.route', { liters: litersUsed.toFixed(2), cost: cost.toFixed(2), currency: currentCurrency.value });
 
         case 'fuel':
             const possibleDistance = consumption > 0 ? (value / consumption) * 100 : 0;
@@ -153,7 +163,8 @@ const result = computed(() => {
             return t('content.result.fuel', {
                 value: value.toFixed(2),
                 distance: possibleDistance.toFixed(2),
-                cost: costFromLiters.toFixed(2)
+                cost: costFromLiters.toFixed(2),
+                currency: currentCurrency.value
             });
 
         case 'amount':
@@ -162,7 +173,8 @@ const result = computed(() => {
             return t('content.result.amount', {
                 value: value.toFixed(2),
                 liters: litersFromMoney.toFixed(2),
-                distance: distanceFromMoney.toFixed(2)
+                distance: distanceFromMoney.toFixed(2),
+                currency: currentCurrency.value
             });
 
         default:

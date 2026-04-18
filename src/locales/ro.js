@@ -49,9 +49,9 @@ export default {
             }
         },
         result: {
-            route: 'Consum: {liters} litri. Cost: {cost} lei.',
-            fuel: 'Pentru {value} litri poți parcurge {distance} km. Cost: {cost} lei.',
-            amount: 'Pentru {value} lei primești {liters} litri. Poți parcurge {distance} km.',
+            route: 'Consum: {liters} litri. Cost: {cost} {currency}.',
+            fuel: 'Pentru {value} litri poți parcurge {distance} km. Cost: {cost} {currency}.',
+            amount: 'Pentru {value} {currency} primești {liters} litri. Poți parcurge {distance} km.',
             default: 'Selectați metoda de calcul'
         },
         map: {
@@ -63,6 +63,9 @@ export default {
         pages: {
             about: 'Despre',
             settings: 'Setări'
+        },
+        settings: {
+            currency: 'Monedă'
         },
         units: {
             km: 'km',

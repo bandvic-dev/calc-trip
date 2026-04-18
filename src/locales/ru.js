@@ -49,9 +49,9 @@ export default {
         }
     },
     result: {
-        route: 'Расход: {liters} литров. Стоимость: {cost} лей.',
-        fuel: 'На {value} литров можно проехать: {distance} км. Стоимость: {cost} лей.',
-        amount: 'За {value} лей вы получите: {liters} литров. Можно проехать: {distance} км.',
+        route: 'Расход: {liters} литров. Стоимость: {cost} {currency}.',
+        fuel: 'На {value} литров можно проехать: {distance} км. Стоимость: {cost} {currency}.',
+        amount: 'За {value} {currency} вы получите: {liters} литров. Можно проехать: {distance} км.',
         default: 'Выберите метод расчета'
     },
     map: {
@@ -63,6 +63,9 @@ export default {
     pages: {
         about: 'О приложении',
         settings: 'Настройки'
+    },
+    settings: {
+        currency: 'Валюта'
     },
     units: {
         km: 'км',

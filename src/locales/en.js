@@ -49,9 +49,9 @@ export default {
             }
         },
         result: {
-            route: 'Consumption: {liters} liters. Cost: {cost} lei.',
-            fuel: 'For {value} liters you can drive {distance} km. Cost: {cost} lei.',
-            amount: 'For {value} lei you get {liters} liters. You can drive {distance} km.',
+            route: 'Consumption: {liters} liters. Cost: {cost} {currency}.',
+            fuel: 'For {value} liters you can drive {distance} km. Cost: {cost} {currency}.',
+            amount: 'For {value} {currency} you get {liters} liters. You can drive {distance} km.',
             default: 'Select calculation method'
         },
         map: {
@@ -63,6 +63,9 @@ export default {
         pages: {
             about: 'About',
             settings: 'Settings'
+        },
+        settings: {
+            currency: 'Currency'
         },
         units: {
             km: 'km',

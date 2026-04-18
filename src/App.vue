@@ -9,7 +9,7 @@
                             <span>Calc Trip</span>
                         </router-link>
                     </v-col>
-                    <v-col cols="8" class="d-flex align-center justify-center">
+                    <v-col cols="7" class="d-flex align-center justify-center">
                         <nav class="navigation">
                             <router-link to="/" class="nav-link">{{ $t('nav.home') }}</router-link>
                             <router-link to="/map" class="nav-link">{{ $t('nav.map') }}</router-link>
@@ -28,7 +28,7 @@
                             </template>
                         </v-select>
                     </v-col>
-                    <!-- <v-col cols="1" class="d-flex align-center">
+                    <v-col cols="1" class="d-flex align-center">
                         <v-menu>
                             <template v-slot:activator="{ props }">
                                 <v-btn class="toolbar-button" v-bind="props" icon="mdi-dots-vertical" />
@@ -39,7 +39,7 @@
                                     :title="$t(item.translationKey)" link />
                             </v-list>
                         </v-menu>
-                    </v-col> -->
+                    </v-col>
                 </v-row>
             </v-container>
         </v-toolbar>
@@ -71,10 +71,10 @@ onMounted(() => {
 })
 
 const languages = ref([
-    { code: 'ru', name: 'Рус', flagClass: 'fi fi-ru' },
-    { code: 'en', name: 'Eng', flagClass: 'fi fi-us' },
-    { code: 'ro', name: 'Rom', flagClass: 'fi fi-ro' },
-    { code: 'uk', name: 'Укр', flagClass: 'fi fi-ua' },
+    { code: 'ru', name: 'РУ', flagClass: 'fi fi-ru' },
+    { code: 'en', name: 'EN', flagClass: 'fi fi-us' },
+    { code: 'ro', name: 'RO', flagClass: 'fi fi-ro' },
+    { code: 'uk', name: 'УК', flagClass: 'fi fi-ua' },
 ])
 
 const STORAGE_KEY = 'app-language'
@@ -157,7 +157,7 @@ body {
 }
 
 .language-selector {
-    max-width: 120px;
+    max-width: 100px;
     margin-right: 10px;
 }
 
