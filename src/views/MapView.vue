@@ -16,12 +16,12 @@
 
                 <div v-if="distance">
                     <hr />
-                    <strong>Дистанция:</strong> {{ (distance / 1000).toFixed(2) }} км
+                    <strong>{{ t('content.map.distance') }}:</strong> {{ (distance / 1000).toFixed(2) }} {{ t('content.units.km') }}
                 </div>
             </div>
             <div class="btn-group">
-                <button v-if="pointA || pointB" @click="clearAll" class="clear-btn">Очистить</button>
-                <button @click="closeMap" class="close-btn">Закрыть</button>
+                <button v-if="pointA || pointB" @click="clearAll" class="clear-btn">{{ t('content.map.clear') }}</button>
+                <button @click="closeMap" class="close-btn">{{ t('content.map.close') }}</button>
             </div>
         </div>
     </div>
@@ -29,6 +29,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -44,6 +45,7 @@ let routeLine = null;
 const addressA = ref('');
 const addressB = ref('');
 const distance = ref(null);
+const { t } = useI18n();
 
 // SVG иконки вместо стандартных PNG (исправляет смещение)
 const iconA = L.divIcon({
@@ -99,7 +101,7 @@ async function reverseGeocode(lat, lon) {
     const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
     const res = await fetch(url);
     const data = await res.json();
-    return data.display_name || 'Адрес не найден';
+    return data.display_name || t('content.map.addressNotFound');
 }
 
 // ---- build OSRM route ----
@@ -248,7 +250,7 @@ onMounted(async () => {
 
 #map {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 48px - 38px);
 }
 
 .info-panel {

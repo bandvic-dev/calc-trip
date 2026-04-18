@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h1>О приложении</h1>
+        <h1>{{ $t('content.pages.about') }}</h1>
     </v-container>
 </template>
 <script setup></script>
