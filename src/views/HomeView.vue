@@ -145,10 +145,10 @@ const priceSuffix = computed(() => {
     return `${currentCurrency.value}/${currentUnits.value === 'metric' ? 'liter' : 'gallon'}`;
 });
 const consumptionSuffix = computed(() => {
-    return currentUnits.value === 'metric' ? 'L/100km' : 'mpg';
+    return currentUnits.value === 'metric' ? t('content.input.consumption.suffix') : 'mpg';
 });
 const distanceSuffix = computed(() => {
-    return currentUnits.value === 'metric' ? t('content.units.km') : 'miles';
+    return currentUnits.value === 'metric' ? t('content.units.km') : t('content.units.miles');
 });
 
 const result = computed(() => {
