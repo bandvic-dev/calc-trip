@@ -190,8 +190,21 @@ const closeMap = () => {
 onMounted(async () => {
     map.value = L.map('map');
 
+    // ---- 1) Load saved points ----
+    const saved = loadPointsFromLS();
+
     navigator.geolocation.getCurrentPosition(
-        pos => map.value.setView([pos.coords.latitude, pos.coords.longitude], 14),
+        async (pos) => {
+            map.value.setView([pos.coords.latitude, pos.coords.longitude], 14);
+            // If no saved point A, set current location as point A
+            if (!saved?.A) {
+                const currentPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                pointA.value = currentPos;
+                addressA.value = await reverseGeocode(currentPos.lat, currentPos.lng);
+                markerA = createDraggableMarker(currentPos, "A").addTo(map.value);
+                savePointsToLS();
+            }
+        },
         () => map.value.setView([47.01, 28.86], 13)
     );
 
@@ -200,18 +213,18 @@ onMounted(async () => {
         attribution: '© OpenStreetMap'
     }).addTo(map.value);
 
-    // ---- 1) Load saved points ----
-    const saved = loadPointsFromLS();
     if (saved?.A) {
         pointA.value = saved.A;
         addressA.value = await reverseGeocode(saved.A.lat, saved.A.lng);
         markerA = createDraggableMarker(saved.A, "A").addTo(map.value);
     }
+
     if (saved?.B) {
         pointB.value = saved.B;
         addressB.value = await reverseGeocode(saved.B.lat, saved.B.lng);
         markerB = createDraggableMarker(saved.B, "B").addTo(map.value);
     }
+
     if (saved?.A && saved?.B) {
         buildRoute();
     }
