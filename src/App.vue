@@ -17,8 +17,16 @@
                     </v-col>
                     <v-col cols="2" class="d-flex align-center justify-end">
                         <v-select v-model="currentLanguage" :items="languages" item-title="name" item-value="code"
-                            density="compact" variant="outlined" hide-details class="language-selector"
-                            @update:model-value="changeLanguage" />
+                            density="compact" variant="outlined" hide-details class="language-selector">
+                            <template #item="{ item, props }">
+                                <v-list-item v-bind="props" title="">
+                                    <span :class="item.raw.flagClass"></span> {{ item.raw.name }}
+                                </v-list-item>
+                            </template>
+                            <template #selection="{ item }">
+                                <span :class="item.raw.flagClass"></span> {{ item.raw.name }}
+                            </template>
+                        </v-select>
                     </v-col>
                     <!-- <v-col cols="1" class="d-flex align-center">
                         <v-menu>
@@ -63,10 +71,10 @@ onMounted(() => {
 })
 
 const languages = ref([
-    { code: 'ru', name: 'Русский' },
-    { code: 'en', name: 'English' },
-    { code: 'ro', name: 'Română' },
-    { code: 'uk', name: 'Українська' }
+    { code: 'ru', name: 'Рус', flagClass: 'fi fi-ru' },
+    { code: 'en', name: 'Eng', flagClass: 'fi fi-us' },
+    { code: 'ro', name: 'Rom', flagClass: 'fi fi-ro' },
+    { code: 'uk', name: 'Укр', flagClass: 'fi fi-ua' },
 ])
 
 const STORAGE_KEY = 'app-language'
@@ -153,6 +161,17 @@ body {
     margin-right: 10px;
 }
 
+.language-selector span {
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.fi {
+    width: 20px;
+    height: 15px;
+    margin-right: 5px;
+}
+
 .language-selector .v-field {
     background-color: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.3);
@@ -166,8 +185,8 @@ body {
     color: rgba(255, 255, 255, 0.87);
 }
 
-.language-selector .v-select__selection {
-    color: rgba(255, 255, 255, 0.87);
+.language-selector .v-list-item {
+    white-space: nowrap;
 }
 
 .copyright {

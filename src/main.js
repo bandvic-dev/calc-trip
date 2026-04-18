@@ -9,6 +9,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
+import 'flag-icons/css/flag-icons.min.css'
 
 const vuetify = createVuetify({
   components,
