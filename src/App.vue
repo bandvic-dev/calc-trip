@@ -65,7 +65,7 @@ onMounted(() => {
 const toolbarMenu = ref([
     { key: 'settings', translationKey: 'menu.settings', link: '/settings' },
     { key: 'about', translationKey: 'menu.about', link: '/about' },
-    { key: 'clearData', translationKey: 'menu.clearData' }
+    // { key: 'clearData', translationKey: 'menu.clearData' }
 ])
 </script>
 
@@ -77,6 +77,10 @@ const toolbarMenu = ref([
 body {
     background-color: #121212;
     color: rgba(255, 255, 255, 0.87);
+}
+
+h1 {
+    margin-bottom: 16px;
 }
 
 .toolbar-button {
