@@ -13,7 +13,8 @@ export default {
     },
     common: {
         language: 'Limbă',
-        selectLanguage: 'Selectați limba'
+        selectLanguage: 'Selectați limba',
+        title: 'Calculator de călătorie'
     },
     content: {
         select: {

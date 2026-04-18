@@ -45,10 +45,19 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n()
+
+// Update document title on locale change
+watch(locale, () => {
+    document.title = t('common.title')
+})
+
+onMounted(() => {
+    document.title = t('common.title')
+})
 
 const languages = ref([
     { code: 'ru', name: 'Русский' },

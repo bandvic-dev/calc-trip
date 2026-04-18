@@ -13,7 +13,8 @@ export default {
     },
     common: {
         language: 'Language',
-        selectLanguage: 'Select language'
+        selectLanguage: 'Select language',
+        title: 'Trip Calculator'
     },
     content: {
         select: {

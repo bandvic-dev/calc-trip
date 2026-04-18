@@ -13,7 +13,8 @@ export default {
   },
   common: {
     language: 'Язык',
-    selectLanguage: 'Выберите язык'
+    selectLanguage: 'Выберите язык',
+    title: 'Калькулятор поездки'
   },
   content: {
     select: {
