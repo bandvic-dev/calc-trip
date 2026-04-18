@@ -4,7 +4,10 @@
             <v-container>
                 <v-row class="align-center">
                     <v-col cols="2" class="d-flex align-center">
-                        <router-link to="/" class="toolbar-title">Calc Trip</router-link>
+                        <router-link to="/" class="toolbar-title">
+                            <img src="/logo-mini.png" alt="Calc Trip" class="toolbar-logo" />
+                            <span>Calc Trip</span>
+                        </router-link>
                     </v-col>
                     <v-col cols="8" class="d-flex align-center justify-center">
                         <nav class="navigation">
@@ -62,7 +65,8 @@ onMounted(() => {
 const languages = ref([
     { code: 'ru', name: 'Русский' },
     { code: 'en', name: 'English' },
-    { code: 'ro', name: 'Română' }
+    { code: 'ro', name: 'Română' },
+    { code: 'uk', name: 'Українська' }
 ])
 
 const STORAGE_KEY = 'app-language'
@@ -129,11 +133,19 @@ body {
 }
 
 .toolbar-title {
+    display: inline-flex;
+    align-items: center;
     color: rgba(255, 255, 255, 0.95);
     text-decoration: none;
     font-weight: 600;
     font-size: 1.1rem;
     cursor: pointer;
+}
+
+.toolbar-logo {
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
 }
 
 .language-selector {
